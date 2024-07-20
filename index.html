@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Braden Scale Calculator</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+        margin: 0;
+        padding: 20px;
+    }
+    h2 {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    form div {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    button:hover {
+        background: #0056b3;
+    }
+    #output {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 20px auto 0;
+    }
+    h3 {
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    ul {
+        padding-left: 20px;
+        list-style: disc;
+    }
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        form, #output {
+            padding: 15px;
+        }
+    }
+</style>
+</head>
+<body>
+<h2>Braden Scale Calculator</h2>
+
+<form id="bradenForm">
+    <div>
+        <label for="sensoryScore">Sensory Perception Score (1-4):</label>
+        <select id="sensoryScore">
+            <option value="4">4 - No Impairment</option>
+            <option value="3">3 - Slightly Limited</option>
+            <option value="2">2 - Very Limited</option>
+            <option value="1">1 - Completely Limited</option>
+        </select>
+    </div>
+    <div>
+        <label for="moistureScore">Moisture Score (1-4):</label>
+        <select id="moistureScore">
+            <option value="4">4 - Rarely Moist</option>
+            <option value="3">3 - Occasionally Moist</option>
+            <option value="2">2 - Often Moist</option>
+            <option value="1">1 - Constantly Moist</option>
+        </select>
+    </div>
+    <div>
+        <label for="activityScore">Activity Score (1-4):</label>
+        <select id="activityScore">
+            <option value="4">4 - Walks Frequently</option>
+            <option value="3">3 - Walks Occasionally</option>
+            <option value="2">2 - Chairfast</option>
+            <option value="1">1 - Bedfast</option>
+        </select>
+    </div>
+    <div>
+        <label for="mobilityScore">Mobility Score (1-4):</label>
+        <select id="mobilityScore">
+            <option value="4">4 - No Limitations</option>
+            <option value="3">3 - Slightly Limited</option>
+            <option value="2">2 - Very Limited</option>
+            <option value="1">1 - Completely Immobile</option>
+        </select>
+    </div>
+    <div>
+        <label for="nutritionScore">Nutrition Score (1-4):</label>
+        <select id="nutritionScore">
+            <option value="4">4 - Excellent</option>
+            <option value="3">3 - Adequate</option>
+            <option value="2">2 - Probably Inadequate</option>
+            <option value="1">1 - Very Poor</option>
+        </select>
+    </div>
+    <div>
+        <label for="frictionScore">Friction and Shear Score (1-3):</label>
+        <select id="frictionScore">
+            <option value="3">3 - No Apparent Problem</option>
+            <option value="2">2 - Potential Problem</option>
+            <option value="1">1 - Problem</option>
+        </select>
+    </div>
+    
+    <button type="button" onclick="calculate()">Calculate</button>
+</form>
+
+<div id="output">
+    <!-- Results will be displayed here -->
+</div>
+
+<script>
+function calculate() {
+    // Get scores from dropdown selections
+    let sensoryScore = parseInt(document.getElementById('sensoryScore').value);
+    let moistureScore = parseInt(document.getElementById('moistureScore').value);
+    let activityScore = parseInt(document.getElementById('activityScore').value);
+    let mobilityScore = parseInt(document.getElementById('mobilityScore').value);
+    let nutritionScore = parseInt(document.getElementById('nutritionScore').value);
+    let frictionScore = parseInt(document.getElementById('frictionScore').value);
+
+    // Calculate total Braden Score
+    let totalScore = sensoryScore + moistureScore + activityScore + mobilityScore + nutritionScore + frictionScore;
+
+    // Example interventions
+    let sensoryInterventions = getInterventions('sensory', sensoryScore);
+    let moistureInterventions = getInterventions('moisture', moistureScore);
+    let activityInterventions = getInterventions('activity', activityScore);
+    let mobilityInterventions = getInterventions('mobility', mobilityScore);
+    let nutritionInterventions = getInterventions('nutrition', nutritionScore);
+    let frictionInterventions = getInterventions('friction', frictionScore);
+
+    // Display results in HTML
+    let outputDiv = document.getElementById('output');
+    outputDiv.innerHTML = `
+        <h3>Total Braden Score: ${totalScore}</h3>
+        
+        <h3>Interventions</h3>
+        <h4>Sensory Perception:</h4>
+        <ul>
+            ${sensoryInterventions.map(intervention => `<li>${intervention}</li>`).join('')}
+        </ul>
+        <h4>Moisture:</h4>
+        <ul>
+            ${moistureInterventions.map(intervention => `<li>${intervention}</li>`).join('')}
+        </ul>
+        <h4>Activity:</h4>
+        <ul>
+            ${activityInterventions.map(intervention => `<li>${intervention}</li>`).join('')}
+        </ul>
+        <h4>Mobility:</h4>
+        <ul>
+            ${mobilityInterventions.map(intervention => `<li>${intervention}</li>`).join('')}
+        </ul>
+        <h4>Nutrition:</h4>
+        <ul>
+            ${nutritionInterventions.map(intervention => `<li>${intervention}</li>`).join('')}
+        </ul>
+        <h4>Friction and Shear:</h4>
+        <ul>
+            ${frictionInterventions.map(intervention => `<li>${intervention}</li>`).join('')}
+        </ul>
+    `;
+}
+
+function getInterventions(category, score) {
+    // Placeholder function for retrieving interventions based on category and score
+    let interventions = [];
+    // Example interventions (replace with actual data from your backend)
+    if (category === 'sensory') {
+        switch (score) {
+            case 4:
+                interventions = [
+                    "Encourage patient to report pain over bony prominences.",
+                    "Check heels daily."
+                ];
+                break;
+            case 3:
+                interventions = [
+                    "Assess and inspect skin every shift, pay attention to heels.",
+                    "Elevate heels and use protectors."
+                ];
+                break;
+            case 2:
+                interventions = [
+                    "All interventions for Slightly Limited.",
+                    "Consider specialty mattress or bed."
+                ];
+                break;
+            case 1:
+                interventions = [
+                    "All interventions for Very Limited.",
+                    "Use pillows between knees and bony prominences to avoid direct contact."
+                ];
+                break;
+            default:
+                interventions = [];
+        }
+    } else if (category === 'moisture') {
+        switch (score) {
+            case 4:
+                interventions = [
+                    "Encourage the patient to use lotion to prevent skin cracks.",
+                    "Encourage the patient to report any moisture problem."
+                ];
+                break;
+            case 3:
+                interventions = [
+                    "All interventions for Rarely Moist.",
+                    "Use moisture barrier ointments (protective skin barriers).",
+                    "Moisturize dry, unbroken skin."
+                ];
+                break;
+            case 2:
+                interventions = [
+                    "All interventions for Occasionally Moist.",
+                    "Check incontinence pads frequently (every 2-3 hours).",
+                    "Consider a low air loss bed."
+                ];
+                break;
+            case 1:
+                interventions = [
+                    "All interventions for Often Moist.",
+                    "Assess and inspect skin every shift.",
+                    "Check incontinence pads frequently (every 2-3 hours) and change as needed.",
+                    "Apply condom catheter if appropriate."
+                ];
+                break;
+            default:
+                interventions = [];
+        }
+    } else if (category === 'activity') {
+        switch (score) {
+            case 4:
+                interventions = [
+                    "Encourage ambulation outside the room.",
+                    "Check skin daily.",
+                    "Monitor balance and endurance."
+                ];
+                break;
+            case 3:
+                interventions = [
+                    "Provide a structured mobility plan.",
+                    "Consider a chair cushion.",
+                    "Consider physical therapy consult."
+                ];
+                break;
+            case 2:
+                interventions = [
+                    "Consider a specialty chair pad.",
+                    "Consider postural alignment, weight distribution, balance, stability, and pressure relief when positioning individuals in chairs or wheelchairs.",
+                    "Instruct the patient to reposition every 15 minutes when in the chair."
+                ];
+                break;
+            case 1:
+                interventions = [
+                    "Perform skin assessment and inspection every shift.",
+                    "Position prone if appropriate or elevate head of bed no more than 30 degrees.",
+                    "Position with pillows to elevate pressure points off the bed."
+                ];
+                break;
+            default:
+                interventions = [];
+        }
+    } else if (category === 'mobility') {
+        switch (score) {
+            case 4:
+                interventions = [
+                    "Check skin daily.",
+                    "Encourage ambulation outside the room at least twice daily."
+                ];
+                break;
+            case 3:
+                interventions = [
+                    "Check skin daily.",
+                    "Turn/reposition frequently.",
+                    "Teach frequent small shifts of body weight."
+                ];
+                break;
+            case 2:
+                interventions = [
+                    "Perform skin assessment and inspection every shift.",
+                    "Turn/reposition 1-2 hours.",
+                    "Post turning schedule."
+                ];
+                break;
+            case 1:
+                interventions = [
+                    "Same interventions as for Very Limited."
+                ];
+                break;
+            default:
+                interventions = [];
+        }
+    } else if (category === 'nutrition') {
+        switch (score) {
+            case 4:
+                interventions = [
+                    "Move the patient out of bed for all meals.",
+                    "Provide food choices.",
+                    "Offer nutrition supplements."
+                ];
+                break;
+            case 3:
+                interventions = [
+                    "Observe and monitor nutritional intake.",
+                    "Record dietary intake and I&O if appropriate."
+                ];
+                break;
+            case 2:
+                interventions = [
+                    "All interventions for Adequate.",
+                    "Encourage fluid intake as appropriate.",
+                    "Obtain nutritional/dietary consult."
+                ];
+                break;
+            case 1:
+                interventions = [
+                    "All interventions for Probably Inadequate.",
+                    "Perform skin assessment and inspection every shift."
+                ];
+                break;
+            default:
+                interventions = [];
+        }
+    } else if (category === 'friction') {
+        switch (score) {
+            case 3:
+                interventions = [
+                    "Keep bed linens clean, dry, and wrinkle free."
+                ];
+                break;
+            case 2:
+                interventions = [
+                    "All interventions for No Apparent Problem.",
+                    "Avoid massaging pressure points.",
+                    "Apply transparent dressing or elbow/heel protectors to intact skin over elbows and heels."
+                ];
+                break;
+            case 1:
+                interventions = [
+                    "All interventions for Potential Problem.",
+                    "Perform skin assessment and inspection every shift.",
+                    "Use a minimum of two people assisting plus a draw sheet in pulling the patient up in bed."
+                ];
+                break;
+            default:
+                interventions = [];
+        }
+    }
+
+    return interventions;
+}
+</script>
+</body>
+</html>
